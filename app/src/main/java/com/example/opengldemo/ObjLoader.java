@@ -89,13 +89,64 @@ public class ObjLoader {
         for (int i = 0; i < tempPositions.size(); i++)
             positions[i] = tempPositions.get(i); // copy each value across
 
-        // normals - same size as positions (x,y,z per vertex)
-        // we initialize to zero for now - we'll calculate them below
-        normals = new float[positions.length];
 
         texCoords = new float[tempTexCoords.size()]; // same for textures
         for (int i = 0; i < texCoords.length; i++)
             texCoords[i] = tempTexCoords.get(i);
+
+        // normals - same size as positions (x,y,z per vertex)
+        // we initialize to zero for now - we'll calculate them below
+        normals = new float[positions.length];
+
+        // CALCULATE NORMALS FROM GEOMETRY
+        // loop through every triangle (every 3 vertices = 1 triangle)
+        // positions array: [x,y,z, x,y,z, x,y,z, ...] → step by 9 (3 vertices × 3 floats)
+        for (int i = 0; i < positions.length; i += 9) {
+
+            // get the 3 vertices of this triangle (A, B, C)
+            float ax = positions[i],     ay = positions[i+1], az = positions[i+2]; // vertex A
+            float bx = positions[i+3],   by = positions[i+4], bz = positions[i+5]; // vertex B
+            float cx = positions[i+6],   cy = positions[i+7], cz = positions[i+8]; // vertex C
+
+            // calculate edge1 = B - A
+            float ex1 = bx - ax;
+            float ey1 = by - ay;
+            float ez1 = bz - az;
+
+            // calculate edge2 = C - A
+            float ex2 = cx - ax;
+            float ey2 = cy - ay;
+            float ez2 = cz - az;
+
+            // cross product edge1 × edge2 = normal perpendicular to triangle
+            float nx = (ey1 * ez2) - (ez1 * ey2);
+            float ny = (ez1 * ex2) - (ex1 * ez2);
+            float nz = (ex1 * ey2) - (ey1 * ex2);
+
+            // normalize → make length = 1
+            float length = (float) Math.sqrt(nx*nx + ny*ny + nz*nz);
+            if (length > 0) { // avoid division by zero
+                nx /= length;
+                ny /= length;
+                nz /= length;
+            }
+
+            // assign same normal to all 3 vertices of this triangle
+            // A
+            normals[i]   = nx;
+            normals[i+1] = ny;
+            normals[i+2] = nz;
+            // B
+            normals[i+3] = nx;
+            normals[i+4] = ny;
+            normals[i+5] = nz;
+            // C
+            normals[i+6] = nx;
+            normals[i+7] = ny;
+            normals[i+8] = nz;
+        }
+
+
 
 
 
