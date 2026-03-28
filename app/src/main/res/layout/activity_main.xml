@@ -1,19 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!-- OpenGL view takes up the top portion -->
+    <com.example.opengldemo.MyGLSurfaceView
+        android:id="@+id/gl_surface_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Editor controls at the bottom (scrollable) -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#222222">
+
+        <LinearLayout
+            android:id="@+id/controls_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <!-- Mode selector: Sphere / AABB / Triangle -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mode:"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/mode_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/mode_sphere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sphere"
+                    android:textColor="#FFFFFF"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/mode_aabb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AABB"
+                    android:textColor="#FFFFFF" />
+
+                <RadioButton
+                    android:id="@+id/mode_triangle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Triangle"
+                    android:textColor="#FFFFFF" />
+            </RadioGroup>
+
+            <!-- Ray Origin Y -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ray Origin Y:"
+                android:textColor="#FFFF00"
+                android:textSize="12sp"
+                android:layout_marginTop="8dp" />
+
+            <SeekBar
+                android:id="@+id/slider_ray_origin_y"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="200"
+                android:progress="100" />
+
+            <!-- Ray Direction Y -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ray Direction Y:"
+                android:textColor="#FFFF00"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+
+            <SeekBar
+                android:id="@+id/slider_ray_dir_y"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="200"
+                android:progress="100" />
+
+            <!-- Ray Direction X -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ray Direction X:"
+                android:textColor="#FFFF00"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+
+            <SeekBar
+                android:id="@+id/slider_ray_dir_x"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="200"
+                android:progress="150" />
+
+            <!-- Sphere Radius / AABB Size / Triangle Scale -->
+            <TextView
+                android:id="@+id/label_param1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sphere Radius:"
+                android:textColor="#00FFFF"
+                android:textSize="12sp"
+                android:layout_marginTop="8dp" />
+
+            <SeekBar
+                android:id="@+id/slider_param1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="200"
+                android:progress="80" />
+
+            <!-- Primitive Position X -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Position X:"
+                android:textColor="#00FFFF"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+
+            <SeekBar
+                android:id="@+id/slider_pos_x"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="200"
+                android:progress="100" />
+
+            <!-- Primitive Position Y -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Position Y:"
+                android:textColor="#00FFFF"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+
+            <SeekBar
+                android:id="@+id/slider_pos_y"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="200"
+                android:progress="100" />
+
+            <!-- Intersection result text -->
+            <TextView
+                android:id="@+id/txt_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Intersection: --"
+                android:textColor="#00FF00"
+                android:textSize="13sp"
+                android:layout_marginTop="8dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
