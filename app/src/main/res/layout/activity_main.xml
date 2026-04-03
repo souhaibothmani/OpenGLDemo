@@ -110,6 +110,22 @@
                 android:max="200"
                 android:progress="150" />
 
+            <!-- Ray Direction Z -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ray Direction Z:"
+                android:textColor="#FFFF00"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+
+            <SeekBar
+                android:id="@+id/slider_ray_dir_z"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="200"
+                android:progress="100" />
+
             <!-- Sphere Radius / AABB Size / Triangle Scale -->
             <TextView
                 android:id="@+id/label_param1"

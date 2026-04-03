@@ -42,7 +42,7 @@ public class IntersectionRenderer implements GLSurfaceView.Renderer {
 
     // PURPOSE: the ray we shoot to test intersections — shared across all modes
     private Ray ray = new Ray(
-            new Vec3(-5, 0, 0),   // origin: starts on the left
+            new Vec3(-5, 0, 0),   // origin: starts on the left at z=2 (same plane as triangle)
             new Vec3(1, 0, 0)     // direction: points right
     );
 
@@ -60,9 +60,9 @@ public class IntersectionRenderer implements GLSurfaceView.Renderer {
 
     // PURPOSE: triangle primitive for ray-triangle intersection + normal interpolation testing
     private Triangle triangle = new Triangle(
-            new Vec3(-2, -1, 0),  // vertex A (bottom-left)
-            new Vec3(2, -1, 0),   // vertex B (bottom-right)
-            new Vec3(0, 2, 0),    // vertex C (top-center)
+            new Vec3(-2, -1, 2),  // vertex A (bottom-left)
+            new Vec3(2, -1, 2),   // vertex B (bottom-right)
+            new Vec3(0, 2, 2),    // vertex C (top-center)
             new Vec3(0, 0, 1),    // normal A (pointing towards camera)
             new Vec3(0, 0, 1),    // normal B
             new Vec3(0, 0, 1)     // normal C
@@ -123,7 +123,7 @@ public class IntersectionRenderer implements GLSurfaceView.Renderer {
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 
         // PURPOSE: make lines thicker (default is 1 pixel, 3 is easier to see)
-        GLES20.glLineWidth(3.0f);
+        GLES20.glLineWidth(10.0f);
 
         // PURPOSE: compile vertex + fragment shaders and link them into a GPU program
         shaderProgram = compileShaders();
@@ -158,7 +158,7 @@ public class IntersectionRenderer implements GLSurfaceView.Renderer {
 
         // PURPOSE: position the camera at z=10 looking at the origin
         Matrix.setLookAtM(viewMatrix, 0,
-                0, 0, 6,    // eye position
+                0, 0, 10,    // eye position
                 0, 0, 0,    // look at center
                 0, 1, 0);   // up direction
 

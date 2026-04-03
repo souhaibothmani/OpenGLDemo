@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private float rayOriginY = 0f;
     private float rayDirX = 1f;
     private float rayDirY = 0f;
+    private float rayDirZ = 0f;
     private float param1 = 2f;   // radius / size
     private float posX = 0f;
     private float posY = 0f;
@@ -104,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
                 } else if (id == R.id.slider_ray_dir_x) {
                     // Map 0-200 to -1.0 to 1.0
                     rayDirX = (progress - 100) / 100.0f;
+                } else if (id == R.id.slider_ray_dir_z) {
+                    // Map 0-200 to -1.0 to 1.0
+                    rayDirZ = (progress - 100) / 100.0f;
                 } else if (id == R.id.slider_param1) {
                     // Map 0-200 to 0.1 to 5.0
                     param1 = progress / 40.0f + 0.1f;
@@ -126,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         ((SeekBar) findViewById(R.id.slider_ray_origin_y)).setOnSeekBarChangeListener(listener);
         ((SeekBar) findViewById(R.id.slider_ray_dir_y)).setOnSeekBarChangeListener(listener);
         ((SeekBar) findViewById(R.id.slider_ray_dir_x)).setOnSeekBarChangeListener(listener);
+        ((SeekBar) findViewById(R.id.slider_ray_dir_z)).setOnSeekBarChangeListener(listener);
         ((SeekBar) findViewById(R.id.slider_param1)).setOnSeekBarChangeListener(listener);
         ((SeekBar) findViewById(R.id.slider_pos_x)).setOnSeekBarChangeListener(listener);
         ((SeekBar) findViewById(R.id.slider_pos_y)).setOnSeekBarChangeListener(listener);
@@ -138,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateScene() {
         // Update ray (origin at x=-5, direction from sliders)
         renderer.setRayOrigin(-5, rayOriginY, 0);
-        renderer.setRayDirection(rayDirX, rayDirY, 0);
+        renderer.setRayDirection(rayDirX, rayDirY, rayDirZ);
 
         // Update the active primitive based on mode
         switch (currentMode) {
@@ -152,14 +157,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 2: // Triangle - param1 controls scale
                 renderer.setTriangleVertices(
-                        posX - param1, posY - param1, 0,    // A bottom-left
-                        posX + param1, posY - param1, 0,    // B bottom-right
-                        posX, posY + param1, 0);             // C top-center
+                        posX - param1, posY - param1, 2,    // A bottom-left
+                        posX + param1, posY - param1, 2,    // B bottom-right
+                        posX, posY + param1, 2);             // C top-center
                 break;
         }
 
         // Run intersection test and display result
-        Ray testRay = new Ray(new Vec3(-5, rayOriginY, 0), new Vec3(rayDirX, rayDirY, 0));
+        Ray testRay = new Ray(new Vec3(-5, rayOriginY, 0), new Vec3(rayDirX, rayDirY, rayDirZ));
         String result;
 
         switch (currentMode) {
@@ -189,9 +194,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 2:
                 Triangle tri = new Triangle(
-                        new Vec3(posX - param1, posY - param1, 0),
-                        new Vec3(posX + param1, posY - param1, 0),
-                        new Vec3(posX, posY + param1, 0),
+                        new Vec3(posX - param1, posY - param1, 2),
+                        new Vec3(posX + param1, posY - param1, 2),
+                        new Vec3(posX, posY + param1, 2),
                         new Vec3(0, 0, 1), new Vec3(0, 0, 1), new Vec3(0, 0, 1));
                 float[] tHits = tri.intersect(testRay);
                 if (tHits != null) {
